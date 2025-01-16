@@ -11,4 +11,4 @@ class User(ABC):
 
     @abstractmethod
     def empValido(self):
-        print (a)
+        pass
