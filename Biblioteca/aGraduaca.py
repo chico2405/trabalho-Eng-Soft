@@ -1,4 +1,5 @@
 from Iuser import User
+from livro import Livro
 
 class alunoGrad(User):
     def __init__ (self, id):
@@ -19,7 +20,8 @@ class alunoGrad(User):
     def empValido(self):
         if len(self.livros) <= self.limiteEmp:
             for i in self.livros:
-                if i.tempoEmprestado > self.tempo:
+                t=i.getTempoEmprestado()
+                if t > self.getTempo():
                     return False
             return True
         

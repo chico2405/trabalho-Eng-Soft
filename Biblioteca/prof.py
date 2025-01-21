@@ -1,5 +1,5 @@
 from Iuser import User
-
+from livro import Livro
 class Prof(User):
     def __init__ (self, id):
         self.id=id
@@ -12,3 +12,10 @@ class Prof(User):
     
     def getTempo(self):
         return self.tempo
+    
+    def empValido(self):
+        for i in self.livros:
+            t=i.getTempoEmprestado()
+            if t > self.getTempo():
+                return False
+        return True
