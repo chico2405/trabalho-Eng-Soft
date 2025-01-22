@@ -2,14 +2,23 @@ from Iuser import User
 from livro import Livro
 
 class alunoGrad(User):
-    def __init__ (self, id):
+    def __init__ (self, id, nome):
         self.id=id
+        self.nome=nome
         self.tempo=4
         self.limiteEmp = 2
         self.limiteRes = 3
         self.livros = []
         self.reservas = []
 
+    def getNome(self):
+        return self.nome
+
+    def getLivros(self):
+        return self.livros
+    
+    def setLivros(self, lista):
+        self.livros=lista
 
     def getID(self):
         return self.id

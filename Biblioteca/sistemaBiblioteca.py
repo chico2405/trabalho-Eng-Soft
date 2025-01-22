@@ -1,11 +1,13 @@
 from Iuser import User
+from comandos import * 
+from livro import Livro
 
 class sistemaBiblioteca:
     _instancia = None  
 
     def __new__(cls, *args, **kwargs):
         if not cls._instancia:
-            cls._instancia = super(sistemaBiblioteca, cls).__new__(cls)
+            cls._instancia = super().__new__(cls)
         return cls._instancia
 
     def __init__(self):
@@ -15,18 +17,44 @@ class sistemaBiblioteca:
 
     def getUserbyID (self, ID):
         for usuario in self.usuarios:
-            if usuario.id == ID:  
+            if usuario == ID:  
                 return usuario
         return None  
     
     def getLivrobyID (self, ID):
           for livro in self.livros:
-            if livro.id == ID:  # Verifica se o ID do livro corresponde
+            if livro.id == ID:  
                 return livro
           return None 
 
     def emp(self, IDuser, IDlivro):
         l=self.getLivrobyID(IDlivro)
         u=self.getUserbyID(IDuser)
-        
-        
+        if l in self.livros:
+            if u.empValido==True:
+                l.setEmprestado(True)
+                l.setReservado(False)
+                u.addLivro(l)
+                cmd=EmprestimoValido(l, u)
+                cmd.executar()
+            else:
+                pass
+        else:
+            cmd = LivroIndisponivel (l)
+            cmd.executar 
+                
+    def dev (self, IDuser, IDlivro):
+        l=self.getLivrobyID(IDlivro)
+        u=self.getUserbyID(IDuser)
+        emprestimos=u.getLivros
+        if l in emprestimos:
+            emprestimos.remove(l)
+            u.setLivros(emprestimos)
+            l.setEmprestado(False)
+            l.setTempoEmprestado(0)
+            self.livros.append(l)
+            #comando devolvido        
+        else:
+            #comando nao-devolvido
+
+   
