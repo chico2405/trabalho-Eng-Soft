@@ -58,4 +58,10 @@ class sistemaBiblioteca:
         else:
             #comando nao-devolvido
 
+    #a cada duas reservas uma notificacao
+    def Addnotificao(self, obs):
+        obs.addNotificacao()
+
+    def getNotificacoes(self, obs):
+        obs.getNotificacoes()
    
