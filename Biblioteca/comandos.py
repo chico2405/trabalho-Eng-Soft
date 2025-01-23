@@ -14,7 +14,20 @@ class LivroIndisponivel(Command):
     
     def executar(self):
         l=self.livro
-        print("Livro " + l.getNome + " indisponível")
+        u=self.user
+        print("Empréstimo negado do livro " + l.getTitulo() + " para " + u.getNome+": Livro indisponível")
+
+class Devedor(Command):
+    def __init__ (self, livro, usuario):
+        self.livro=livro
+        self.user=usuario
+    
+    def executar(self):
+        l=self.livro
+        u=self.user
+
+        print("Empréstimo negado do livro " + l.getTitulo() + " para " + u.getNome+": Devedor")
+
 
 
  #main pra começar a executar:

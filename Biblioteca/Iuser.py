@@ -26,5 +26,12 @@ class User(ABC):
         pass
 
     @abstractmethod
-    def empValido(self):
+    def getDevedor(self):
         pass
+    
+
+    @abstractmethod
+    def reservaValida(self):
+        pass
+
+    

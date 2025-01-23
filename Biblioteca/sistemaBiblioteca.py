@@ -31,17 +31,18 @@ class sistemaBiblioteca:
         l=self.getLivrobyID(IDlivro)
         u=self.getUserbyID(IDuser)
         if l in self.livros:
-            if u.empValido==True:
+            if u.empValido()=="Valido":
                 l.setEmprestado(True)
                 l.setReservado(False)
                 u.addLivro(l)
                 cmd=EmprestimoValido(l, u)
                 cmd.executar()
-            else:
-                pass
+            else if u.empValido()=="Devedor":
+                cmd=Devedor(l, u)
+                cmd.executar()
         else:
-            cmd = LivroIndisponivel (l)
-            cmd.executar 
+            cmd = LivroIndisponivel (l, u)
+            cmd.executar() 
                 
     def dev (self, IDuser, IDlivro):
         l=self.getLivrobyID(IDlivro)

@@ -10,6 +10,7 @@ class alunoPos(User):
         self.limiteRes = 3
         self.livros = []
         self.reservas = []
+        self.reservaValida = True
 
     def getNome (self):
         return self.nome
@@ -31,5 +32,12 @@ class alunoPos(User):
             for i in self.livros:
                 t=i.getTempoEmprestado()
                 if t > self.getTempo():
-                    return False
-            return True
+                    self.reservaValida = False
+                    return "Devedor"
+            return "Valido"
+        else:
+            return "LimiteAtingido"
+        
+    def getReservaValida(self):
+        self.empValido()
+        return self.reservaValida
