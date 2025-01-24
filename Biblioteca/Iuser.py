@@ -24,14 +24,24 @@ class User(ABC):
     @abstractmethod
     def addLivro(self):
         pass
-
-    @abstractmethod
-    def getDevedor(self):
-        pass
     
+    @abstractmethod
+    def removeLivro(self):
+        pass
 
     @abstractmethod
     def reservaValida(self):
         pass
 
+    @abstractmethod
+    def getLimiteReservas(self):
+        pass
+
+    @abstractmethod
+    def getReservas(self):
+        pass
+
+       @abstractmethod
+    def addLivro(self):
+        pass
     

@@ -11,7 +11,8 @@ class alunoPos(User):
         self.livros = []
         self.reservas = []
         self.reservaValida = True
-
+        self.devedor = False
+    
     def getNome (self):
         return self.nome
 
@@ -27,17 +28,35 @@ class alunoPos(User):
     def getTempo(self):
         return self.tempo
     
+    def getLimiteReservas(self):
+        return self.limiteRes
+
+    def getReservas(self):
+        return self.reservas
+
     def empValido(self):
-        if len(self.livros) <= self.limiteEmp:
+        if len(self.livros) < self.limiteEmp:
             for i in self.livros:
                 t=i.getTempoEmprestado()
                 if t > self.getTempo():
-                    self.reservaValida = False
-                    return "Devedor"
-            return "Valido"
+                    self.devedor = True
+                    cmd = Devedor(livro, self)
+                    return cmd.executar()
+            livro.setEmprestado(True)
+            if livro.getReservas()>0:
+                livro.removeReserva()
+            self.addLivro(livro)
+            cmd=EmprestimoValido(livro, self)
+            return cmd.executar()
         else:
-            return "LimiteAtingido"
+            cmd=LimiteLivros(l, u)
+            return cmd.executar()
         
-    def getReservaValida(self):
-        self.empValido()
-        return self.reservaValida
+    def reservaValida(self):
+        lim=self.getLimiteReservas()
+        reservas=self.getReservas()
+        if len(reservas)<lim and self.devedor is False:
+            return True
+        else: 
+            return False
+            

@@ -10,7 +10,8 @@ class Prof(User, Oberservador):
         self.limiteRes = 3
         self.reservaValida = True
         self.notificacoes = 0
-    
+        self.devedor = False
+
     def getNome(self):
         return self.nome
 
@@ -23,24 +24,44 @@ class Prof(User, Oberservador):
     def addNotificacao(self):
         self.notificacoes=self.notificacoes + 1
 
+   def getLimiteReservas(self):
+        return self.limiteRes
+
+    def getReservas(self):
+        return self.reservas
+
     def getLivros(self):
         return self.livros
     
-    def setLivros(self, lista):
-        self.livros=lista
+    def addLivro(self, livro):
+        self.livros.append(livro)
+    
+    def removeLivro(self, livro):
+        self.livros.remove(livro)
     
 
     def getTempo(self):
         return self.tempo
     
-    def empValido(self):
+    def empValido(self, livro):
         for i in self.livros:
             t=i.getTempoEmprestado()
             if t > self.getTempo():  
-                self.reservaValida = False
-                return "Devedor"  
-        return "Valido"
+                self.devedor = True
+                cmd=Devedor(livro, self)
+                return cmd.executar()
+        livro.setEmprestado(True)
+        if livro.getReservas()>0:
+            livro.removeReserva()
+        self.addLivro(livro)
+        cmd=EmprestimoValido(livro, self)
+        return cmd.executar()
+        
 
-    def getReservaValida(self):
-        self.empValido()
-        return self.reservaValida
+    def reservaValida(self):
+        lim=self.getLimiteReservas()
+        reservas=self.getReservas()
+        if len(reservas)<lim and self.devedor is False:
+            return True
+        else: 
+            return False
