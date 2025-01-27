@@ -5,7 +5,7 @@ class User(ABC):
     @abstractmethod
     def getLivros(self):
         pass
-
+    
     def setLivros(self):
         pass
     
@@ -41,7 +41,10 @@ class User(ABC):
     def getReservas(self):
         pass
 
-       @abstractmethod
-    def addLivro(self):
+    @abstractmethod
+    def addReserva(self):
         pass
-    
+
+    @abstractmethod
+    def removeReserva(self):
+        pass

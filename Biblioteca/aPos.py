@@ -10,8 +10,6 @@ class alunoPos(User):
         self.limiteRes = 3
         self.livros = []
         self.reservas = []
-        self.reservaValida = True
-        self.devedor = False
     
     def getNome (self):
         return self.nome
@@ -33,29 +31,43 @@ class alunoPos(User):
 
     def getReservas(self):
         return self.reservas
+    
+    def addReserva(self, livro):
+        self.reservas.append(livro)
 
-    def empValido(self):
+    def empValido(self, livro):
         if len(self.livros) < self.limiteEmp:
+            if livro not in u.reservas:
+                x=0
+                for i in self.livros:
+                    if i.id == livro.id:
+                        x=x+1
+                        if livro.getReservas()>=x:
+                            cmd = MaisReservasQueExemplares (livro, self)
+                            cmd.executar()
+                            return False
             for i in self.livros:
                 t=i.getTempoEmprestado()
                 if t > self.getTempo():
-                    self.devedor = True
                     cmd = Devedor(livro, self)
-                    return cmd.executar()
-            livro.setEmprestado(True)
-            if livro.getReservas()>0:
+                    cmd.executar()
+                    return False
+            if livro in self.reservas:
                 livro.removeReserva()
+                self.removeReserva(livro)
             self.addLivro(livro)
             cmd=EmprestimoValido(livro, self)
-            return cmd.executar()
+            cmd.executar()
+            retun True
         else:
-            cmd=LimiteLivros(l, u)
-            return cmd.executar()
+            cmd=LimiteLivros(livro, self)
+            cmd.executar()
+            return False
         
     def reservaValida(self):
         lim=self.getLimiteReservas()
         reservas=self.getReservas()
-        if len(reservas)<lim and self.devedor is False:
+        if len(reservas)<lim:
             return True
         else: 
             return False

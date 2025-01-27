@@ -7,7 +7,6 @@ class Livro:
         self.edicao=edicao
         self.ano_publicacao=ap
         self.tempo_emprestado=0
-        self.emprestado=False
         self.observadores = []
         self.reservas = 0
         
@@ -22,18 +21,21 @@ class Livro:
 
     def removeReserva(self):
         self.reservas = self.reservas-1
+    
+    def addReserva(self):
+        self.reservas = self.reservas+1
 
     def getReservas(self):
         return self.reservas
 
-    def setEmprestado(self, vv):
-        self.reservado = vv
-
     def getReservado(self):
         return self.reservado
 
-    def getEmprestado(self):
-        return self.emprestado
-
     def getObservadores(self):
-        return self.observadores  
+        return self.observadores 
+
+    def notificarObservadores(self):
+        obs = self.getObservadores() 
+        if obs is not None and self.getReservas()>2:
+            for i in obs:
+                i.addNotificacao() 

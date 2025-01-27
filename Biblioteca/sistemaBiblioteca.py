@@ -14,7 +14,6 @@ class sistemaBiblioteca:
         if not hasattr(self, "usuarios") or not hasattr(self, "livros"):  
             self.usuarios = []  
             self.livros = []
-            self.obvservadores = []
     def getUserbyID (self, ID):
         for usuario in self.usuarios:
             if usuario == ID:  
@@ -22,16 +21,23 @@ class sistemaBiblioteca:
         return None  
     
     def getLivrobyID (self, ID):
-          for livro in self.livros:
+        for livro in self.livros:
             if livro.id == ID:  
                 return livro
-          return None 
+        return None 
+
+    def removeLivro (self, livro):
+        self.livros.remove(livro)
+
+    def addLivro(self, livro):
+        self.livros.append(livro)
 
     def emp(self, IDuser, IDlivro):
         l=self.getLivrobyID(IDlivro)
         u=self.getUserbyID(IDuser)
-        if l in self.livros:
-            return u.empValido()    
+        if l in self.livros is True:
+            if u.empValido(l) is True:
+                self.removeLivro(l)    
         else:
             cmd = LivroIndisponivel (l, u)
             return cmd.executar() 
@@ -42,21 +48,21 @@ class sistemaBiblioteca:
         emprestimos=u.getLivros()
         if l in emprestimos:
             u.removeLivros(l)
-            l.setEmprestado(False)
             l.setTempoEmprestado(0)
-            self.livros.append(l)
-            #comando devolvido        
+            self.addLivro(l)
+            cmd = LivroDevolvido(l, u)
+            cmd.executar()       
         else:
-            #comando nao-devolvido
+            cmd = LivroNaoDevolvido(l, u)
+            cmd.executar()
  
     def res (self, IDuser, IDlivro):
         l=self.getLivrobyID(IDlivro)
         u=self.getUserbyID(IDuser)
-        if u.reservaValida:
-            #adicionar na lista de reservas!!!
-            if l.observadores is not None and l.getReservas()>2:
-                for i in l.observadores:
-                    i.addNotificacao()
+        if u.reservaValida() is True:
+            u.addReserva(l)
+            l.addReserva()
+            l.notificarObservadores()
 
 
    
