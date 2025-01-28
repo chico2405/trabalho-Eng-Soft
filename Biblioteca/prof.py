@@ -1,6 +1,9 @@
 from Iuser import User
 from livro import Livro
-class Prof(User, Oberservador):
+from Iobservador import Observador
+from comandos import *
+
+class Prof(User, Observador):
     def __init__ (self, id, nome):
         self.id=id
         self.nome=nome
@@ -23,7 +26,7 @@ class Prof(User, Oberservador):
     def addNotificacao(self):
         self.notificacoes=self.notificacoes + 1
 
-   def getLimiteReservas(self):
+    def getLimiteReservas(self):
         return self.limiteRes
 
     def getReservas(self):
@@ -40,6 +43,9 @@ class Prof(User, Oberservador):
     
     def addReserva(self, livro):
         self.reservas.append(livro)
+
+    def removeReserva(self, livro):
+        self.reservas.remove(livro)
 
     def getTempo(self):
         return self.tempo

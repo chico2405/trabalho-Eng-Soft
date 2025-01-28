@@ -6,8 +6,6 @@ class User(ABC):
     def getLivros(self):
         pass
     
-    def setLivros(self):
-        pass
     
     @abstractmethod
     def getID (self):

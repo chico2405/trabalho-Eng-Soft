@@ -9,12 +9,22 @@ class Livro:
         self.tempo_emprestado=0
         self.observadores = []
         self.reservas = 0
-        
+        self.emprestado = False
+
+    def getEmprestado(self):
+        return self.emprestado
+
+    def setEmprestado(self, vv):
+        self.emprestado = vv
+
     def getTempoEmprestado(self):
         return self.tempo_emprestado
     
     def setTempoEmprestado(self, valor):
         self.tempo_emprestado=valor
+
+    def getID(self):
+        return self.id
 
     def getTitulo(self):
         return self.titulo

@@ -1,5 +1,6 @@
 from Iuser import User
 from livro import Livro
+from comandos import *
 
 class alunoPos(User):
     def __init__ (self, id, nome):
@@ -20,8 +21,11 @@ class alunoPos(User):
     def getLivros(self):
         return self.livros
     
-    def setLivros(self, lista):
-        self.livros=lista
+    def addLivro(self, livro):
+        self.livros.append(livro)
+
+    def removeLivro(self, livro):
+        self.livros.remove(livro)
 
     def getTempo(self):
         return self.tempo
@@ -35,9 +39,12 @@ class alunoPos(User):
     def addReserva(self, livro):
         self.reservas.append(livro)
 
+    def removeReserva(self, livro):
+        self.reservas.remove(livro)
+
     def empValido(self, livro):
         if len(self.livros) < self.limiteEmp:
-            if livro not in u.reservas:
+            if livro not in self.reservas:
                 x=0
                 for i in self.livros:
                     if i.id == livro.id:
@@ -58,7 +65,7 @@ class alunoPos(User):
             self.addLivro(livro)
             cmd=EmprestimoValido(livro, self)
             cmd.executar()
-            retun True
+            return True
         else:
             cmd=LimiteLivros(livro, self)
             cmd.executar()

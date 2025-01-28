@@ -3,44 +3,43 @@ from comandos import *
 from livro import Livro
 
 class sistemaBiblioteca:
-    _instancia = None  
+    _instance = None
 
     def __new__(cls, *args, **kwargs):
-        if not cls._instancia:
-            cls._instancia = super().__new__(cls)
-        return cls._instancia
+        if not cls._instance:
+            cls._instance = super(sistemaBiblioteca, cls).__new__(cls)
+        return cls._instance
 
-    def __init__(self):
-        if not hasattr(self, "usuarios") or not hasattr(self, "livros"):  
-            self.usuarios = []  
-            self.livros = []
+    def __init__(self, lista_usuarios=None, lista_livros=None):
+        if not hasattr(self, 'usuarios'):
+            self.usuarios = lista_usuarios if lista_usuarios else []
+            self.livros = lista_livros if lista_livros else []
+
+
     def getUserbyID (self, ID):
         for usuario in self.usuarios:
-            if usuario == ID:  
+            if usuario.getID() == ID:  
                 return usuario
-        return None  
+            else:
+                return None
+         
     
     def getLivrobyID (self, ID):
         for livro in self.livros:
-            if livro.id == ID:  
+            if livro.getID() == ID:  
                 return livro
         return None 
 
-    def removeLivro (self, livro):
-        self.livros.remove(livro)
-
-    def addLivro(self, livro):
-        self.livros.append(livro)
 
     def emp(self, IDuser, IDlivro):
         l=self.getLivrobyID(IDlivro)
         u=self.getUserbyID(IDuser)
-        if l in self.livros is True:
+        if l.getEmprestado() is False:
             if u.empValido(l) is True:
-                self.removeLivro(l)    
+                l.setEmprestado(True)    
         else:
             cmd = LivroIndisponivel (l, u)
-            return cmd.executar() 
+            cmd.executar() 
                 
     def dev (self, IDuser, IDlivro):
         l=self.getLivrobyID(IDlivro)

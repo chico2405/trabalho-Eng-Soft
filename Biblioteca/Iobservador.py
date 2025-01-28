@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-class Oberservador(ABC):
+class Observador(ABC):
 
     @abstractmethod
     def getNotificacoes(self):
