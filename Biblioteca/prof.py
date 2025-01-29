@@ -58,17 +58,18 @@ class Prof(User, Observador):
                 cmd.executar()
                 return False
         if livro in self.reservas:
-            livro.removeReserva()
+            livro.removeReserva(self)
             self.removeReserva(livro)
         self.addLivro(livro)
         cmd=EmprestimoValido(livro, self)
         cmd.executar()
         return True
         
-    def reservaValida(self):
+    def reservaValida(self, livro):
         lim=self.getLimiteReservas()
         reservas=self.getReservas()
-        if len(reservas)<lim:
+        if len(reservas)<lim and livro not in reservas:
             return True
         else: 
             return False
+    

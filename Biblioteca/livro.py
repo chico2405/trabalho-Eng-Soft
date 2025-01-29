@@ -10,20 +10,21 @@ class Livro:
         self.ano_publicacao=ap
         self.tempo_emprestado=0
         self.observadores = []
-        self.reservas = 0
+        self.reservas = []
         self.emprestado = False
-        self.exemplares = [Exemplar(1)]
+        #self.exemplares = [Exemplar(1)]
 
     def getEmprestado(self):
-        for i in self.exemplares:
-            if i.getEmprestado() is False:
-                return False
-        return True
+        #for i in self.exemplares:
+            #if i.getEmprestado() is False:
+                #return False
+        return self.emprestado
 
     def setEmprestado(self, vv):
-        for i in self.exemplares:
-            if i.getEmprestado() is False:
-                i.setEmprestado(vv)
+        #for i in self.exemplares:
+            #if i.getEmprestado() is False:
+               # i.setEmprestado(vv)
+        self.emprestado = vv
 
     def getTempoEmprestado(self):
         return self.tempo_emprestado
@@ -37,11 +38,11 @@ class Livro:
     def getTitulo(self):
         return self.titulo
 
-    def removeReserva(self):
-        self.reservas = self.reservas-1
+    def removeReserva(self, user):
+        self.reservas.remove(user)
     
-    def addReserva(self):
-        self.reservas = self.reservas+1
+    def addReserva(self, user):
+        self.reservas.append(user)
 
     def getReservas(self):
         return self.reservas
@@ -52,8 +53,13 @@ class Livro:
     def getObservadores(self):
         return self.observadores 
 
+    def addObservadores(self, obs):
+        self.observadores.append(obs)
+
     def notificarObservadores(self):
         obs = self.getObservadores() 
-        if obs is not None and self.getReservas()>2:
+        if obs is not None and len(self.getReservas())>2:
             for i in obs:
-                i.addNotificacao() 
+                i.addNotificacao()
+        else:
+            return None 

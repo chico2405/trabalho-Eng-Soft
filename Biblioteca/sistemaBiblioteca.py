@@ -34,6 +34,10 @@ class sistemaBiblioteca:
     def emp(self, IDuser, IDlivro):
         l=self.getLivrobyID(IDlivro)
         u=self.getUserbyID(IDuser)
+        #if l not in u.getReservas():
+            #if len(l.getReservas())>=len(l.getExemplares):
+                    #cmd = MaisReservasQueExemplares (livro, self)
+                    #cmd.executar()
         if l.getEmprestado() is False:
             if u.empValido(l) is True:
                 l.setEmprestado(True)    
@@ -46,7 +50,7 @@ class sistemaBiblioteca:
         u=self.getUserbyID(IDuser)
         emprestimos=u.getLivros()
         if l in emprestimos:
-            u.removeLivros(l)
+            u.removeLivro(l)
             l.setTempoEmprestado(0)
             l.setEmprestado(False)
             cmd = LivroDevolvido(l, u)
@@ -58,12 +62,39 @@ class sistemaBiblioteca:
     def res (self, IDuser, IDlivro):
         l=self.getLivrobyID(IDlivro)
         u=self.getUserbyID(IDuser)
-        if u.reservaValida() is True:
-            
+        if u.reservaValida(l) is True:
+            #checar se há mais exemplares do que reservas
             u.addReserva(l)
-            l.addReserva()
-            if len(u.getReservas())>2:
+            l.addReserva(u)
+            if len(l.getReservas()) > 2:
                 l.notificarObservadores()
+            cmd = ReservaValida(l, u)
+            cmd.executar()
+        else:
+            cmd = LimiteReservas(l, u)
+            cmd.executar()
 
+    def obs(self, IDobs, IDlivro):
+        o = self.getUserbyID(IDobs)
+        l = self.getLivrobyID(IDlivro)
+        l.addObservadores(o)
+        cmd = ObservadorConfirmado(o, l)
+        cmd.executar()
 
-   
+    #def liv(self, IDlivro):
+        #l = self.getLivrobyID(IDlivro)
+        #res=l.getReservas()
+        #for
+    
+    def usu(self, IDuser):
+        u = self.getUserbyID(IDuser)
+        livros = u.getLivros()
+        res = u.getReservas()
+        cmd = ConsultaUsuario(u, livros, res)
+        cmd.executar()
+
+    def ntf (self, IDobs):
+        obs = self.getUserbyID(IDobs)
+        noti = obs.getNotificacoes()
+        cmd = Notificacoes(noti)
+        cmd.executar()

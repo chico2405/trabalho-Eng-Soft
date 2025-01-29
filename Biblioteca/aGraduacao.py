@@ -49,7 +49,7 @@ class alunoGrad(User):
                 for i in self.livros:
                     if i.id == livro.id:
                         x=x+1
-                        if livro.getReservas()>=x:
+                        if len(livro.getReservas())>=x:
                             cmd = MaisReservasQueExemplares (livro, self)
                             cmd.executar()
                             return False
@@ -60,7 +60,7 @@ class alunoGrad(User):
                     cmd.executar()
                     return False
             if livro in self.reservas:
-                livro.removeReserva()
+                livro.removeReserva(self)
                 self.removeReserva(livro)
             self.addLivro(livro)
             cmd=EmprestimoValido(livro, self)
@@ -71,10 +71,10 @@ class alunoGrad(User):
             cmd.executar()
             return False
 
-    def reservaValida(self):
+    def reservaValida(self, livro):
         lim=self.getLimiteReservas()
         reservas=self.getReservas()
-        if len(reservas)<lim:
+        if len(reservas)<lim and livro not in reservas:
             return True
         else: 
             return False

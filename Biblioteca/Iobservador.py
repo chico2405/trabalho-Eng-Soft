@@ -7,5 +7,9 @@ class Observador(ABC):
         pass
 
     @abstractmethod
+    def getNome(self):
+        pass
+
+    @abstractmethod
     def addNotificacao(self):
         pass
