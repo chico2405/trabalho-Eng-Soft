@@ -17,7 +17,7 @@ def main():
     l4 = Livro("103", "titulo4", "editora4", "autor4", "4", "2003")
     l5 = Livro("104", "titulo5", "editora5", "autor5", "5", "2002")
         
-    s=sistemaBiblioteca([u1, u2, u3], [l1, l2, l3, l4, l5])
+    s=sistemaBiblioteca([u1, u2, u3, u4, u5], [l1, l2, l3, l4, l5])
     
     while True:
         x=input().split()

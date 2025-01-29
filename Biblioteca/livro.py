@@ -38,6 +38,9 @@ class Livro:
     def removeReserva(self):
         self.reservas = self.reservas-1
 
+    def getReservas(self):
+        return self.reservas
+
     def getID(self):
         return self.id
 
@@ -52,7 +55,7 @@ class Livro:
 
     def notificarObservadores(self):
         obs = self.getObservadores() 
-        if obs is not None and len(self.getReservas())>2:
+        if obs is not None and self.getReservas()>2:
             for i in obs:
                 i.addNotificacao()
         else:

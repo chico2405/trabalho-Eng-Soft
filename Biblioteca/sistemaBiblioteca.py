@@ -68,8 +68,8 @@ class sistemaBiblioteca:
             #checar se há mais exemplares do que reservas
             reserva = Reserva(l, datetime.now().strftime("%Y-%m-%d"))
             u.addReserva(reserva)
-            l.addReservas()
-            if len(l.getReservas()) > 2:
+            l.addReserva()
+            if l.getReservas() > 2:
                 l.notificarObservadores()
             cmd = ReservaValida(l, u)
             cmd.executar()
