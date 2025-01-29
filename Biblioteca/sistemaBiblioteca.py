@@ -1,6 +1,8 @@
 from Iuser import User
 from comandos import * 
 from livro import Livro
+from datetime import datetime
+from reserva import Reserva
 
 class sistemaBiblioteca:
     _instance = None
@@ -64,8 +66,9 @@ class sistemaBiblioteca:
         u=self.getUserbyID(IDuser)
         if u.reservaValida(l) is True:
             #checar se há mais exemplares do que reservas
-            u.addReserva(l)
-            l.addReserva(u)
+            reserva = Reserva(l, datetime.now().strftime("%Y-%m-%d"))
+            u.addReserva(reserva)
+            l.addReservas()
             if len(l.getReservas()) > 2:
                 l.notificarObservadores()
             cmd = ReservaValida(l, u)

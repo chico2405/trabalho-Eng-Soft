@@ -8,6 +8,8 @@ def main():
     u1 = alunoGrad('123', "Chico")
     u2 = alunoPos("456","Luis")
     u3 = Prof("789", "Lucas")
+    u4 = Prof("902", "Paulo")
+    u5 = alunoGrad("805", "Pedro")
 
     l1 = Livro('100', "titulo1", "editora", "autor1", "1", "2000")
     l2 = Livro("101", "titulo2", "editora2", "autor2", "2", "2001")

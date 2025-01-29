@@ -11,3 +11,5 @@ class Exemplar:
 
     def setEmprestado(self, vv):
         self.emprestado = vv
+
+        

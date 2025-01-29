@@ -10,8 +10,8 @@ class Livro:
         self.ano_publicacao=ap
         self.tempo_emprestado=0
         self.observadores = []
-        self.reservas = []
         self.emprestado = False
+        self.reservas = 0
         #self.exemplares = [Exemplar(1)]
 
     def getEmprestado(self):
@@ -32,23 +32,17 @@ class Livro:
     def setTempoEmprestado(self, valor):
         self.tempo_emprestado=valor
 
+    def addReserva(self):
+        self.reservas = self.reservas+1
+    
+    def removeReserva(self):
+        self.reservas = self.reservas-1
+
     def getID(self):
         return self.id
 
     def getTitulo(self):
         return self.titulo
-
-    def removeReserva(self, user):
-        self.reservas.remove(user)
-    
-    def addReserva(self, user):
-        self.reservas.append(user)
-
-    def getReservas(self):
-        return self.reservas
-
-    def getReservado(self):
-        return self.reservado
 
     def getObservadores(self):
         return self.observadores 

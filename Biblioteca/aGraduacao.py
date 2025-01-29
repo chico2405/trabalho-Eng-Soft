@@ -44,24 +44,16 @@ class alunoGrad(User):
     
     def empValido(self, livro):
         if len(self.livros) < self.limiteEmp:
-            if livro not in self.reservas:
-                x=0
-                for i in self.livros:
-                    if i.id == livro.id:
-                        x=x+1
-                        if len(livro.getReservas())>=x:
-                            cmd = MaisReservasQueExemplares (livro, self)
-                            cmd.executar()
-                            return False
             for i in self.livros:
                 t=i.getTempoEmprestado()
                 if t > self.getTempo():
                     cmd = Devedor(livro, self)
                     cmd.executar()
                     return False
-            if livro in self.reservas:
-                livro.removeReserva(self)
-                self.removeReserva(livro)
+            for i in self.getReservas():
+                if i.getLivro() == livro:
+                    livro.removeReserva()
+                    self.removeReserva(i)
             self.addLivro(livro)
             cmd=EmprestimoValido(livro, self)
             cmd.executar()

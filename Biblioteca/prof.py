@@ -2,6 +2,7 @@ from Iuser import User
 from livro import Livro
 from Iobservador import Observador
 from comandos import *
+from reserva import Reserva
 
 class Prof(User, Observador):
     def __init__ (self, id, nome):
@@ -57,9 +58,10 @@ class Prof(User, Observador):
                 cmd=Devedor(livro, self)
                 cmd.executar()
                 return False
-        if livro in self.reservas:
-            livro.removeReserva(self)
-            self.removeReserva(livro)
+        for i in self.getReservas():
+            if i.getLivro() == livro:
+                livro.removeReserva()
+                self.removeReserva(i)
         self.addLivro(livro)
         cmd=EmprestimoValido(livro, self)
         cmd.executar()

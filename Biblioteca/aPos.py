@@ -11,7 +11,8 @@ class alunoPos(User):
         self.limiteRes = 3
         self.livros = []
         self.reservas = []
-    
+        self.datasReservas = []
+        
     def getNome (self):
         return self.nome
 
@@ -50,9 +51,10 @@ class alunoPos(User):
                     cmd = Devedor(livro, self)
                     cmd.executar()
                     return False
-            if livro in self.reservas:
-                livro.removeReserva(self)
-                self.removeReserva(livro)
+            for i in self.getReservas():
+                if i.getLivro() == livro:
+                    livro.removeReserva()
+                    self.removeReserva(i)
             self.addLivro(livro)
             cmd=EmprestimoValido(livro, self)
             cmd.executar()
