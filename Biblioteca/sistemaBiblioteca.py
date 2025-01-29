@@ -20,13 +20,13 @@ class sistemaBiblioteca:
         for usuario in self.usuarios:
             if usuario.getID() == ID:  
                 return usuario
-            else:
-                return None
+            
+        return None
          
     
     def getLivrobyID (self, ID):
         for livro in self.livros:
-            if livro.getID() == ID:  
+            if livro.getID() == ID:
                 return livro
         return None 
 
@@ -48,7 +48,7 @@ class sistemaBiblioteca:
         if l in emprestimos:
             u.removeLivros(l)
             l.setTempoEmprestado(0)
-            self.addLivro(l)
+            l.setEmprestado(False)
             cmd = LivroDevolvido(l, u)
             cmd.executar()       
         else:
@@ -59,9 +59,11 @@ class sistemaBiblioteca:
         l=self.getLivrobyID(IDlivro)
         u=self.getUserbyID(IDuser)
         if u.reservaValida() is True:
+            
             u.addReserva(l)
             l.addReserva()
-            l.notificarObservadores()
+            if len(u.getReservas())>2:
+                l.notificarObservadores()
 
 
    

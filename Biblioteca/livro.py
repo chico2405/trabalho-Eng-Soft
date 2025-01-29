@@ -1,3 +1,5 @@
+from exemplares import Exemplar
+
 class Livro:
     def __init__ (self, id, t, ed, au, edicao, ap):
         self.id=id
@@ -10,12 +12,18 @@ class Livro:
         self.observadores = []
         self.reservas = 0
         self.emprestado = False
+        self.exemplares = [Exemplar(1)]
 
     def getEmprestado(self):
-        return self.emprestado
+        for i in self.exemplares:
+            if i.getEmprestado() is False:
+                return False
+        return True
 
     def setEmprestado(self, vv):
-        self.emprestado = vv
+        for i in self.exemplares:
+            if i.getEmprestado() is False:
+                i.setEmprestado(vv)
 
     def getTempoEmprestado(self):
         return self.tempo_emprestado
