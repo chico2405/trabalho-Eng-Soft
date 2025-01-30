@@ -90,9 +90,14 @@ class sistemaBiblioteca:
     
     def usu(self, IDuser):
         u = self.getUserbyID(IDuser)
-        livros = u.getLivros()
+        exemplares = u.getLivros()
+        livros = []
+        for i in self.livros:
+            for j in exemplares:
+                if i.id==j.id:
+                    livros.append(i)
         res = u.getReservas()
-        cmd = ConsultaUsuario(u, livros, res)
+        cmd = ConsultaUsuario(u, exemplares, livros, res)
         cmd.executar()
 
     def ntf (self, IDobs):

@@ -51,7 +51,7 @@ class Livro:
 
     def notificarObservadores(self):
         obs = self.getObservadores() 
-        if obs is not None and self.getReservas()>2:
+        if obs is not None and len(self.getReservas())>2:
             for i in obs:
                 i.addNotificacao()
         else:

@@ -107,22 +107,25 @@ class LimiteReservas(Command):
         print("Reserva do livro " + l.getTitulo() + " para " + u.getNome()  + " não pode ser feita: Limite de reservas atingido")
 
 class ConsultaUsuario(Command):
-    def __init__ (self, u, livros, res):
+    def __init__ (self, u,exemplares, livros, res):
         self.user = u
         self.livros = livros
         self.reservas = res
-    
+        self.exemplares = exemplares
+
     def executar(self):
         print("Empréstimos: ")
         for i in self.livros:
             estado = "Disponivel"
             if i.getEmprestado() is True:
                 estado="Emprestado"
-            print(i.titulo, estado)
+            for j in self.exemplares:
+                if j.id == i.id:
+                    print(i.titulo, estado)
             #informações que tem a ver com as datas
         print ("Reservas: ")
         for i in self.reservas:
-            print(i.titulo, i.getData_Reserva)            
+            print(i.getTitulo(), i.getData_Reserva())            
 
 class Notificacoes(Command):
     def __init__ (self, noti):

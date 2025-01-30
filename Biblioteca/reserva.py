@@ -6,6 +6,9 @@ class Reserva:
     def getLivro(self):
         return self.livro
     
+    def getTitulo(self):
+        return self.livro.getTitulo()
+    
     def getData_Reserva(self):
         return self.data_reserva
     
