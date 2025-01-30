@@ -36,13 +36,13 @@ class sistemaBiblioteca:
     def emp(self, IDuser, IDlivro):
         l=self.getLivrobyID(IDlivro)
         u=self.getUserbyID(IDuser)
-        #if l not in u.getReservas():
-            #if len(l.getReservas())>=len(l.getExemplares):
-                    #cmd = MaisReservasQueExemplares (livro, self)
-                    #cmd.executar()
+        if l not in u.getReservas():
+            if len(l.getReservas())>=len(l.getExemplares()):
+                    cmd = MaisReservasQueExemplares (l, u)
+                    cmd.executar()
         if l.getEmprestado() is False:
-            if u.empValido(l) is True:
-                l.setEmprestado(True)    
+            exemplar = l.getExemplarDisponivel(datetime.now().strftime("%Y-%m-%d"))
+            u.empValido(exemplar, l)        
         else:
             cmd = LivroIndisponivel (l, u)
             cmd.executar() 
@@ -51,15 +51,14 @@ class sistemaBiblioteca:
         l=self.getLivrobyID(IDlivro)
         u=self.getUserbyID(IDuser)
         emprestimos=u.getLivros()
-        if l in emprestimos:
-            u.removeLivro(l)
-            l.setTempoEmprestado(0)
-            l.setEmprestado(False)
-            cmd = LivroDevolvido(l, u)
-            cmd.executar()       
-        else:
-            cmd = LivroNaoDevolvido(l, u)
-            cmd.executar()
+        for i in l.getExemplares():
+            if i in u.getLivros():
+                u.removeLivro(i)
+                i.Devolvido()
+                cmd = LivroDevolvido(l, u)
+                return cmd.executar()
+        cmd = LivroNaoDevolvido(l, u)
+        cmd.executar()
  
     def res (self, IDuser, IDlivro):
         l=self.getLivrobyID(IDlivro)
@@ -68,8 +67,8 @@ class sistemaBiblioteca:
             #checar se há mais exemplares do que reservas
             reserva = Reserva(l, datetime.now().strftime("%Y-%m-%d"))
             u.addReserva(reserva)
-            l.addReserva()
-            if l.getReservas() > 2:
+            l.addReserva(u)
+            if len(l.getReservas()) > 2:
                 l.notificarObservadores()
             cmd = ReservaValida(l, u)
             cmd.executar()

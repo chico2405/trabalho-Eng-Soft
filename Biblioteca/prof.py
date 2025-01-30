@@ -9,7 +9,7 @@ class Prof(User, Observador):
         self.id=id
         self.nome=nome
         self.tempo=8
-        self.livros = []
+        self.livros = [] #lista com EXEMPLARES
         self.reservas = []
         self.limiteRes = 3
         self.notificacoes = 0
@@ -51,7 +51,7 @@ class Prof(User, Observador):
     def getTempo(self):
         return self.tempo
     
-    def empValido(self, livro):
+    def empValido(self, exemplar, livro):
         for i in self.livros:
             t=i.getTempoEmprestado()
             if t > self.getTempo():  
@@ -60,9 +60,9 @@ class Prof(User, Observador):
                 return False
         for i in self.getReservas():
             if i.getLivro() == livro:
-                livro.removeReserva()
+                livro.removeReserva(self)
                 self.removeReserva(i)
-        self.addLivro(livro)
+        self.addLivro(exemplar)
         cmd=EmprestimoValido(livro, self)
         cmd.executar()
         return True

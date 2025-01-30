@@ -120,9 +120,9 @@ class ConsultaUsuario(Command):
                 estado="Emprestado"
             print(i.titulo, estado)
             #informações que tem a ver com as datas
+        print ("Reservas: ")
         for i in self.reservas:
-            print(i.titulo)
-            #informações que tem a ver datas
+            print(i.titulo, i.getData_Reserva)            
 
 class Notificacoes(Command):
     def __init__ (self, noti):

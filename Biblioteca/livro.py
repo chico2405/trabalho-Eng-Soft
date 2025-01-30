@@ -8,35 +8,31 @@ class Livro:
         self.autores=au
         self.edicao=edicao
         self.ano_publicacao=ap
-        self.tempo_emprestado=0
         self.observadores = []
-        self.emprestado = False
-        self.reservas = 0
-        #self.exemplares = [Exemplar(1)]
+        self.reservas = []
+        self.exemplares = []
 
     def getEmprestado(self):
-        #for i in self.exemplares:
-            #if i.getEmprestado() is False:
-                #return False
-        return self.emprestado
+        for i in self.exemplares:
+            if i.getEmprestado() is False:
+                return False
+        return True
 
-    def setEmprestado(self, vv):
-        #for i in self.exemplares:
-            #if i.getEmprestado() is False:
-               # i.setEmprestado(vv)
-        self.emprestado = vv
-
-    def getTempoEmprestado(self):
-        return self.tempo_emprestado
+    def getExemplares(self):
+        return self.exemplares
+                
+    def getExemplarDisponivel(self, data_emprestimo):
+        for i in self.exemplares:
+            if i.getEmprestado() is False:
+                i.setEmprestado(data_emprestimo)
+                return i
+        return None
     
-    def setTempoEmprestado(self, valor):
-        self.tempo_emprestado=valor
-
-    def addReserva(self):
-        self.reservas = self.reservas+1
+    def addReserva(self, user):
+        self.reservas.append(user)
     
-    def removeReserva(self):
-        self.reservas = self.reservas-1
+    def removeReserva(self, user):
+        self.reservas.remove(user)
 
     def getReservas(self):
         return self.reservas

@@ -1,6 +1,7 @@
 from Iuser import User
 from livro import Livro
 from comandos import *
+from datetime import datetime
 
 class alunoPos(User):
     def __init__ (self, id, nome):
@@ -9,7 +10,7 @@ class alunoPos(User):
         self.tempo=5
         self.limiteEmp = 3
         self.limiteRes = 3
-        self.livros = []
+        self.livros = []  #lista com EXEMPLARES
         self.reservas = []
         self.datasReservas = []
         
@@ -43,7 +44,7 @@ class alunoPos(User):
     def removeReserva(self, livro):
         self.reservas.remove(livro)
 
-    def empValido(self, livro):
+    def empValido(self, exemplar, livro):
         if len(self.livros) < self.limiteEmp:
             for i in self.livros:
                 t=i.getTempoEmprestado()
@@ -53,9 +54,9 @@ class alunoPos(User):
                     return False
             for i in self.getReservas():
                 if i.getLivro() == livro:
-                    livro.removeReserva()
+                    livro.removeReserva(self)
                     self.removeReserva(i)
-            self.addLivro(livro)
+            self.addLivro(exemplar)
             cmd=EmprestimoValido(livro, self)
             cmd.executar()
             return True

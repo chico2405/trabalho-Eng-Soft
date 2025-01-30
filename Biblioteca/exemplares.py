@@ -1,7 +1,11 @@
+from datetime import datetime
+
 class Exemplar:
-    def __init__ (self, id):
+    def __init__ (self, id, id_exemplar):
         self.id=id
+        self.id_exemplar = id_exemplar
         self.emprestado = False
+        self.data_emprestimo = None
 
     def getID(self):
         return self.id
@@ -9,7 +13,22 @@ class Exemplar:
     def getEmprestado(self):
         return self.emprestado
 
-    def setEmprestado(self, vv):
-        self.emprestado = vv
+    def setEmprestado(self, data_emprestimo):
+        self.emprestado = True
+        self.data_emprestimo=data_emprestimo
 
-        
+    def getData_Emprestimo(self):
+        return self.data_emprestimo
+
+    def Devolvido(self):
+        self.data_emprestimo = None
+        self.emprestado = False
+
+    def getTempoEmprestado(self):
+        if self.data_emprestimo is not None:
+            data_emprestimo_dt = datetime.strptime(self.data_emprestimo, "%Y-%m-%d")
+            diferenca = (datetime.now() - data_emprestimo_dt).days
+            return diferenca
+        else:
+            return 0
+    
