@@ -1,4 +1,5 @@
 from Icomando import Command
+from datetime import datetime, timedelta
 
 class EmprestimoValido(Command):
     def __init__ (self, livro, user):
@@ -107,25 +108,38 @@ class LimiteReservas(Command):
         print("Reserva do livro " + l.getTitulo() + " para " + u.getNome()  + " não pode ser feita: Limite de reservas atingido")
 
 class ConsultaUsuario(Command):
-    def __init__ (self, u,exemplares, livros, res):
+    def __init__ (self, u, livros, res):
         self.user = u
         self.livros = livros
         self.reservas = res
-        self.exemplares = exemplares
 
     def executar(self):
         print("Empréstimos: ")
         for i in self.livros:
-            estado = "Disponivel"
-            if i.getEmprestado() is True:
-                estado="Emprestado"
-            for j in self.exemplares:
+            dataemp = None
+            datadev = None
+            dataprev = None
+            estado = "Finalizado"
+            for j in self.user.getLivros():
                 if j.id == i.id:
-                    print(i.titulo, estado)
-            #informações que tem a ver com as datas
+                    if j.getEmprestado() is True:
+                        estado = "Em curso"
+                    if estado=="Em curso":
+                        dataemp = j.getData_Emprestimo()
+                        data_hoje = datetime.now()
+                        tempo_usuario = self.user.getTempo()  # Inteiro representando dias
+                        tempo_emprestado = j.getTempoEmprestado()  # Inteiro representando dias
+                        diferenca_dias = tempo_usuario - tempo_emprestado
+                        dataprev = data_hoje + timedelta(days=diferenca_dias)
+
+                        print(i.titulo, estado, "data de empréstimo: ", dataemp, "dias para a devolução: ", dataprev.strftime("%Y-%m-%d"))
+                    if estado=="Finalizado":
+                        datadev = j.getData_devolucao()
+                        print(i.titulo, estado, "data de empréstimo: ", dataemp, "data da devolução: ", datadev)
+
         print ("Reservas: ")
         for i in self.reservas:
-            print(i.getTitulo(), i.getData_Reserva())            
+            print(i.getTitulo(), "data da reserva: ", i.getData_Reserva())            
 
 class Notificacoes(Command):
     def __init__ (self, noti):

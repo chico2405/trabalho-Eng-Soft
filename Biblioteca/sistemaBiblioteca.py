@@ -36,16 +36,21 @@ class sistemaBiblioteca:
     def emp(self, IDuser, IDlivro):
         l=self.getLivrobyID(IDlivro)
         u=self.getUserbyID(IDuser)
-        if l not in u.getReservas():
-            if len(l.getReservas())>=len(l.getExemplares()):
-                    cmd = MaisReservasQueExemplares (l, u)
-                    cmd.executar()
-        if l.getEmprestado() is False:
-            exemplar = l.getExemplarDisponivel(datetime.now().strftime("%Y-%m-%d"))
-            u.empValido(exemplar, l)        
-        else:
-            cmd = LivroIndisponivel (l, u)
-            cmd.executar() 
+        maisReservas = True
+        if len(l.getReservas())>=len(l.getExemplares()):
+                    if l not in u.getReservas():
+                        cmd = MaisReservasQueExemplares (l, u)
+                        cmd.executar()
+                        maisReservas = False
+        if maisReservas is True:
+            if l.getEmprestado() is False:
+                if u.empValido(l) is True:
+                    exemplar = l.getExemplarDisponivel()
+                    u.addLivro(exemplar)
+                    exemplar.setEmprestado(datetime.now().strftime("%Y-%m-%d"))     
+            else:
+                cmd = LivroIndisponivel (l, u)
+                cmd.executar() 
                 
     def dev (self, IDuser, IDlivro):
         l=self.getLivrobyID(IDlivro)
@@ -54,7 +59,6 @@ class sistemaBiblioteca:
         for i in l.getExemplares():
             if i in u.getLivros():
                 u.removeLivro(i)
-                i.Devolvido()
                 cmd = LivroDevolvido(l, u)
                 return cmd.executar()
         cmd = LivroNaoDevolvido(l, u)
@@ -64,7 +68,6 @@ class sistemaBiblioteca:
         l=self.getLivrobyID(IDlivro)
         u=self.getUserbyID(IDuser)
         if u.reservaValida(l) is True:
-            #checar se há mais exemplares do que reservas
             reserva = Reserva(l, datetime.now().strftime("%Y-%m-%d"))
             u.addReserva(reserva)
             l.addReserva(u)
@@ -97,7 +100,7 @@ class sistemaBiblioteca:
                 if i.id==j.id:
                     livros.append(i)
         res = u.getReservas()
-        cmd = ConsultaUsuario(u, exemplares, livros, res)
+        cmd = ConsultaUsuario(u, livros, res)
         cmd.executar()
 
     def ntf (self, IDobs):

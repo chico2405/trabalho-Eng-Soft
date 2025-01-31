@@ -9,7 +9,7 @@ class Livro:
         self.edicao=edicao
         self.ano_publicacao=ap
         self.observadores = []
-        self.reservas = []
+        self.usuarios_reservaram = []
         self.exemplares = []
 
     def getEmprestado(self):
@@ -21,21 +21,20 @@ class Livro:
     def getExemplares(self):
         return self.exemplares
                 
-    def getExemplarDisponivel(self, data_emprestimo):
+    def getExemplarDisponivel(self):
         for i in self.exemplares:
             if i.getEmprestado() is False:
-                i.setEmprestado(data_emprestimo)
                 return i
         return None
     
     def addReserva(self, user):
-        self.reservas.append(user)
+        self.usuarios_reservaram.append(user)
     
     def removeReserva(self, user):
         self.reservas.remove(user)
 
     def getReservas(self):
-        return self.reservas
+        return self.usuarios_reservaram
 
     def getID(self):
         return self.id
@@ -51,7 +50,7 @@ class Livro:
 
     def notificarObservadores(self):
         obs = self.getObservadores() 
-        if obs is not None and len(self.getReservas())>2:
+        if obs is not None and len(self.usuarios_reservaram)>2:
             for i in obs:
                 i.addNotificacao()
         else:

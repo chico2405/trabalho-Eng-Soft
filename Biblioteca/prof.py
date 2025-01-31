@@ -3,6 +3,8 @@ from livro import Livro
 from Iobservador import Observador
 from comandos import *
 from reserva import Reserva
+from datetime import datetime
+from exemplares import Exemplar
 
 class Prof(User, Observador):
     def __init__ (self, id, nome):
@@ -36,11 +38,13 @@ class Prof(User, Observador):
     def getLivros(self):
         return self.livros
     
-    def addLivro(self, livro):
-        self.livros.append(livro)
-    
+    def addLivro(self, exemplar):
+        self.livros.append(exemplar)
+
     def removeLivro(self, livro):
-        self.livros.remove(livro)
+        for i in self.livros:
+            if i == livro:
+                i.Devolvido(datetime.now().strftime("%Y-%m-%d"))
     
     def addReserva(self, livro):
         self.reservas.append(livro)
@@ -51,7 +55,7 @@ class Prof(User, Observador):
     def getTempo(self):
         return self.tempo
     
-    def empValido(self, exemplar, livro):
+    def empValido(self, livro):
         for i in self.livros:
             t=i.getTempoEmprestado()
             if t > self.getTempo():  
@@ -62,7 +66,6 @@ class Prof(User, Observador):
             if i.getLivro() == livro:
                 livro.removeReserva(self)
                 self.removeReserva(i)
-        self.addLivro(exemplar)
         cmd=EmprestimoValido(livro, self)
         cmd.executar()
         return True

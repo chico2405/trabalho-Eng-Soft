@@ -6,6 +6,7 @@ class Exemplar:
         self.id_exemplar = id_exemplar
         self.emprestado = False
         self.data_emprestimo = None
+        self.data_devolucao = None
 
     def getID(self):
         return self.id
@@ -17,11 +18,15 @@ class Exemplar:
         self.emprestado = True
         self.data_emprestimo=data_emprestimo
 
+
     def getData_Emprestimo(self):
         return self.data_emprestimo
 
-    def Devolvido(self):
-        self.data_emprestimo = None
+    def getData_devolucao(self):
+        return self.data_devolucao
+
+    def Devolvido(self, data):
+        self.data_devolucao = data
         self.emprestado = False
 
     def getTempoEmprestado(self):
@@ -31,4 +36,6 @@ class Exemplar:
             return diferenca
         else:
             return 0
+    
+
     
