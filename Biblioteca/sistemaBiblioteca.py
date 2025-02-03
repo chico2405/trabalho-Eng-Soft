@@ -30,27 +30,20 @@ class sistemaBiblioteca:
         for livro in self.livros:
             if livro.getID() == ID:
                 return livro
-        return None 
-
+        return None
+    
 
     def emp(self, IDuser, IDlivro):
         l=self.getLivrobyID(IDlivro)
         u=self.getUserbyID(IDuser)
-        maisReservas = True
-        if len(l.getReservas())>=len(l.getExemplares()):
-                    if l not in u.getReservas():
-                        cmd = MaisReservasQueExemplares (l, u)
-                        cmd.executar()
-                        maisReservas = False
-        if maisReservas is True:
-            if l.getEmprestado() is False:
-                if u.empValido(l) is True:
-                    exemplar = l.getExemplarDisponivel()
-                    u.addLivro(exemplar)
-                    exemplar.setEmprestado(datetime.now().strftime("%Y-%m-%d"))     
-            else:
-                cmd = LivroIndisponivel (l, u)
-                cmd.executar() 
+        if l.getEmprestado() is False:
+            if u.empValido(l) is True:
+                exemplar = l.getExemplarDisponivel()
+                u.addLivro(exemplar)
+                exemplar.setEmprestado(datetime.now().strftime("%Y-%m-%d"))     
+        else:
+            cmd = LivroIndisponivel (l, u)
+            cmd.executar() 
                 
     def dev (self, IDuser, IDlivro):
         l=self.getLivrobyID(IDlivro)
@@ -86,10 +79,11 @@ class sistemaBiblioteca:
         cmd = ObservadorConfirmado(o, l)
         cmd.executar()
 
-    #def liv(self, IDlivro):
-        #l = self.getLivrobyID(IDlivro)
-        #res=l.getReservas()
-        #for
+    def liv(self, IDlivro):
+        l = self.getLivrobyID(IDlivro)
+        res=l.getReservas()
+        cmd = ConsultaLivro(l,res, self.usuarios)
+
     
     def usu(self, IDuser):
         u = self.getUserbyID(IDuser)

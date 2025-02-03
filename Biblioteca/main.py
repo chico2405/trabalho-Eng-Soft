@@ -32,6 +32,10 @@ def main():
             if i.id == j.id:
                 i.exemplares.append(j)
     
+    fabrica = FabricaSistemaBiblioteca()
+
+    sema = fabrica.get_sistema()ist
+
     s=sistemaBiblioteca([u1, u2, u3, u4, u5], [l1, l2, l3, l4, l5])
     
     while True:

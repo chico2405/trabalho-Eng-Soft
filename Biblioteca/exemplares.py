@@ -11,6 +11,9 @@ class Exemplar:
     def getID(self):
         return self.id
     
+    def getIdEx (self):
+        return self.id_exemplar
+    
     def getEmprestado(self):
         return self.emprestado
 
@@ -38,4 +41,5 @@ class Exemplar:
             return 0
     
 
+    def g
     

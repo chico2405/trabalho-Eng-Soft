@@ -48,6 +48,11 @@ class alunoGrad(User):
     
     def empValido(self, livro):
         if len(self.livros) < self.limiteEmp:
+            if len(livro.getReservas())>=len(livro.getExemplares()):
+                if livro not in self.getReservas():
+                        cmd = MaisReservasQueExemplares (livro, self)
+                        cmd.executar()
+                        return False
             for i in self.livros:
                 t=i.getTempoEmprestado()
                 if t > self.getTempo():

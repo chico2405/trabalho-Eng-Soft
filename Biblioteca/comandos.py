@@ -141,6 +141,32 @@ class ConsultaUsuario(Command):
         for i in self.reservas:
             print(i.getTitulo(), "data da reserva: ", i.getData_Reserva())            
 
+
+class ConsultaLivro(Command):
+    def __init__ (self, livro, res):
+        self.livro = livro
+        self.reservaram = res
+
+        def executar(self):
+            titulo = self.livro.getTitulo()
+            qnt_reservas = len(self.reservaram)
+            if qnt_reservas > 0:
+                print ("Usuários que reservaram o livro: ")
+                for i in self.reservaram:
+                    print(i.getNome())
+            
+            for i in self.livro.getExemplares():
+                status = "Disponível"
+                if i.getEmprestado() is True:
+                           
+                   status = "Emprestado para " + 
+                print ("Exemplares: ")
+                print ("Código: ", i.getIdEx, " status: ", status, " ")
+
+
+                    
+
+
 class Notificacoes(Command):
     def __init__ (self, noti):
         self.notificacoes=noti
