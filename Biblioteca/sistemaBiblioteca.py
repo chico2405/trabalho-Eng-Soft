@@ -41,7 +41,7 @@ class sistemaBiblioteca:
         for i in l.getExemplares():
             if i in u.getLivros():
                 u.removeLivro(i)
-                print("Livro " + l.getTitulo() + " emprestado para " + u.getNome() +" devolvido")    
+                return print("Livro " + l.getTitulo() + " emprestado para " + u.getNome() +" devolvido")    
         print("Livro " + l.getTitulo() + " emprestado para " + u.getNome() +" não pode ser devolvido") 
  
     def res (self, IDuser, IDlivro):
@@ -66,7 +66,7 @@ class sistemaBiblioteca:
     def liv(self, IDlivro):
         l = self.getLivrobyID(IDlivro)
         res=l.getReservas()
-        titulo = self.livro.getTitulo()
+        titulo =l.getTitulo()
         qnt_reservas = len(res)
         print(titulo, " reservas: ", qnt_reservas)
         if qnt_reservas > 0:
@@ -105,7 +105,7 @@ class sistemaBiblioteca:
             if estado=="Finalizado":
                 datadev = j.getData_devolucao()
                 dataemp = j.getData_Emprestimo()
-                print(j.getTitulo, estado, "data de empréstimo: ", dataemp, "data da devolução: ", datadev)
+                print(j.getTitulo(), estado, "data de empréstimo: ", dataemp, "data da devolução: ", datadev)
 
         print ("Reservas: ")
         for i in res:
