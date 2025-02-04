@@ -1,5 +1,5 @@
-from comandos import * 
-from datetime import datetime
+ 
+from datetime import datetime, timedelta
 from reserva import Reserva
 
 class sistemaBiblioteca:
@@ -30,10 +30,10 @@ class sistemaBiblioteca:
             if u.empValido(l) is True:
                 exemplar = l.getExemplarDisponivel()
                 u.addLivro(exemplar)
-                exemplar.setEmprestado(datetime.now().strftime("%Y-%m-%d"), u)     
+                exemplar.setEmprestado(datetime.now().strftime("%Y-%m-%d"), u)
+                print("Empréstimo do livro " + l.getTitulo() + " para " + u.getNome()  + " feito com sucesso!")     
         else:
-            cmd = LivroIndisponivel (l, u)
-            cmd.executar() 
+            print("Empréstimo negado do livro " + l.getTitulo() + " para " + u.getNome() +": Livro indisponível")
                 
     def dev (self, IDuser, IDlivro):
         l=self.getLivrobyID(IDlivro)
@@ -41,11 +41,8 @@ class sistemaBiblioteca:
         for i in l.getExemplares():
             if i in u.getLivros():
                 u.removeLivro(i)
-                cmd = LivroDevolvido(l, u)
-                return cmd.executar()
-        
-        cmd = LivroNaoDevolvido(l, u)
-        return cmd.executar()
+                print("Livro " + l.getTitulo() + " emprestado para " + u.getNome() +" devolvido")    
+        print("Livro " + l.getTitulo() + " emprestado para " + u.getNome() +" não pode ser devolvido") 
  
     def res (self, IDuser, IDlivro):
         l=self.getLivrobyID(IDlivro)
@@ -56,34 +53,65 @@ class sistemaBiblioteca:
             l.addReserva(u)
             if len(l.getReservas()) > 2:
                 l.notificarObservadores()
-            cmd = ReservaValida(l, u)
-            cmd.executar()
+            print("Reserva do livro " + l.getTitulo() + " para " + u.getNome()  + " feito com sucesso!")
         else:
-            cmd = LimiteReservas(l, u)
-            cmd.executar()
+            print("Reserva do livro " + l.getTitulo() + " para " + u.getNome()  + " não pode ser feita: Limite de reservas atingido")
 
     def obs(self, IDobs, IDlivro):
         o = self.getUserbyID(IDobs)
         l = self.getLivrobyID(IDlivro)
         l.addObservadores(o)
-        cmd = ObservadorConfirmado(o, l)
-        cmd.executar()
+        print(o.getNome() +  " confirmado como observador do livro " +l.getTitulo())
 
     def liv(self, IDlivro):
         l = self.getLivrobyID(IDlivro)
         res=l.getReservas()
-        cmd = ConsultaLivro(l,res)
-        cmd.executar()
+        titulo = self.livro.getTitulo()
+        qnt_reservas = len(res)
+        print(titulo, " reservas: ", qnt_reservas)
+        if qnt_reservas > 0:
+            print ("Usuários que reservaram o livro: ")
+            for i in res:
+                print(i.getNome())
+        print ('Exemplares: ')
+        for i in l.getExemplares():
+            status = "Disponível"
+            if i.getEmprestado() is True:
+                dono_emprestimo = i.getUser().getNome()
+                dataprev = i.getDataPrevista()
+                dataemp = i.getData_Emprestimo()
+                status = "Emprestado para " + str(dono_emprestimo) + " data empréstimo: " + dataemp + " data prevista para devolução: " + dataprev
+                print ("Código: ", i.getIdEx() , " status: ", status)
+            else:
+                print ("Código: ", i.getIdEx() , " status: ", status)
+ 
 
-    
     def usu(self, IDuser):
         u = self.getUserbyID(IDuser)
         res = u.getReservas()
-        cmd = ConsultaUsuario(u, res)
-        cmd.executar()
+        print("Empréstimos: ")
+        for j in u.getLivros():
+            estado = "Finalizado"
+            if j.getEmprestado() is True:
+                estado = "Em curso"
+            if estado=="Em curso":
+                dataemp = j.getData_Emprestimo()
+                data_hoje = datetime.now()
+                tempo_usuario = u.getTempo()  # Inteiro representando dias
+                tempo_emprestado = j.getTempoEmprestado()  # Inteiro representando dias
+                diferenca_dias = tempo_usuario - tempo_emprestado
+                dataprev = data_hoje + timedelta(days=diferenca_dias)
+                print(j.getTitulo(), estado, "data de empréstimo: ", dataemp, "data para a devolução: ", dataprev.strftime("%Y-%m-%d"))
+            if estado=="Finalizado":
+                datadev = j.getData_devolucao()
+                dataemp = j.getData_Emprestimo()
+                print(j.getTitulo, estado, "data de empréstimo: ", dataemp, "data da devolução: ", datadev)
+
+        print ("Reservas: ")
+        for i in res:
+            print(i.getTitulo(), "data da reserva: ", i.getData_Reserva())            
 
     def ntf (self, IDobs):
         obs = self.getUserbyID(IDobs)
         noti = obs.getNotificacoes()
-        cmd = Notificacoes(noti)
-        cmd.executar()
+        print(noti)

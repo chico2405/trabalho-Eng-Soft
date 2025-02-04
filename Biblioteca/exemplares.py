@@ -57,7 +57,6 @@ class Exemplar:
         return self.user
 
     def getDataPrevista(self):
-        dataemp = self.getData_Emprestimo()
         data_hoje = datetime.now()
         tempo_usuario = self.user.getTempo()  # Inteiro representando dias
         tempo_emprestado = self.getTempoEmprestado()  # Inteiro representando dias

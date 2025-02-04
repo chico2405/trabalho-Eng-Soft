@@ -1,8 +1,5 @@
 from Iuser import User
-from livro import Livro
-from comandos import *
 from datetime import datetime
-from exemplares import Exemplar
 
 class alunoGrad(User):
     def __init__ (self, id, nome):
@@ -50,25 +47,20 @@ class alunoGrad(User):
         if len(self.livros) < self.limiteEmp:
             if len(livro.getReservas())>=len(livro.getExemplares()):
                 if livro not in self.getReservas():
-                        cmd = MaisReservasQueExemplares (livro, self)
-                        cmd.executar()
+                        print("Empréstimo negado do livro " + livro.getTitulo() + " para " + self.getNome() +": Mais reservas do que exemplares")
                         return False
             for i in self.livros:
                 t=i.getTempoEmprestado()
                 if t > self.getTempo():
-                    cmd = Devedor(livro, self)
-                    cmd.executar()
+                    print("Empréstimo negado do livro " + livro.getTitulo() + " para " + self.getNome() +": Devedor")
                     return False
             for i in self.getReservas():
                 if i.getLivro() == livro:
                     livro.removeReserva(self)
                     self.removeReserva(i)
-            cmd=EmprestimoValido(livro, self)
-            cmd.executar()
             return True
         else:
-            cmd=LimiteLivros(livro, self)
-            cmd.executar()
+            print("Empréstimo negado do livro " + livro.getTitulo() + " para " + self.getNome() +": Limite de livros emprestados atingido")
             return False
 
     def reservaValida(self, livro):

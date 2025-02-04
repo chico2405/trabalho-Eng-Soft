@@ -1,4 +1,4 @@
-
+from console import Console
 from aGraduacao import alunoGrad
 from aPos import alunoPos
 from prof import Prof
@@ -36,33 +36,9 @@ def main():
     
 
     s=getSistemaBiblioteca.get_sistema([u1, u2, u3, u4, u5], [l1, l2, l3, l4, l5])
-    
-    while True:
-        x=input().split()
-        
-        if x[0] == "emp":
-            s.emp(x[1], x[2])
-        
-        if x[0] == "dev":
-            s.dev(x[1], x[2])
-        
-        if x[0] == "res":
-            s.res(x[1], x[2])
-        
-        if x[0] == "obs":
-            s.obs(x[1], x[2])
-        
-        if x[0] == "usu":
-            s.usu(x[1])
-        
-        if x[0] == "liv":
-            s.liv(x[1])
-        
-        if x[0] == "ntf":
-            s.ntf(x[1])
+    console=Console(s)
+    console.run()
 
-        if x[0] == "sai":
-            break
 
 if __name__ == "__main__":
     main()

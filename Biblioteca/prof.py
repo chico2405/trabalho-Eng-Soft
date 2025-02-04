@@ -1,10 +1,6 @@
 from Iuser import User
-from livro import Livro
 from Iobservador import Observador
-from comandos import *
-from reserva import Reserva
 from datetime import datetime
-from exemplares import Exemplar
 
 class Prof(User, Observador):
     def __init__ (self, id, nome):
@@ -59,15 +55,12 @@ class Prof(User, Observador):
         for i in self.livros:
             t=i.getTempoEmprestado()
             if t > self.getTempo():  
-                cmd=Devedor(livro, self)
-                cmd.executar()
+                print("Empréstimo negado do livro " + livro.getTitulo() + " para " + self.getNome() +": Devedor")
                 return False
         for i in self.getReservas():
             if i.getLivro() == livro:
                 livro.removeReserva(self)
                 self.removeReserva(i)
-        cmd=EmprestimoValido(livro, self)
-        cmd.executar()
         return True
         
     def reservaValida(self, livro):
