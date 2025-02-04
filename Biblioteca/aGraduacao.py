@@ -43,9 +43,17 @@ class alunoGrad(User):
     def getTempo(self):
         return self.tempo
     
+    def getEmprestimos_em_curso(self):
+        em_curso=[]
+        for i in self.livros:
+            if i.getEmprestado() is True:
+                em_curso.append(i)
+        return em_curso
+
+    
     def empValido(self, livro):
-        if len(self.livros) < self.limiteEmp:
-            if len(livro.getReservas())>=len(livro.getExemplares()):
+        if len(self.getEmprestimos_em_curso()) < self.limiteEmp:
+            if len(livro.getReservas())>=len(livro.getExemplaresDisponiveis()):
                 if livro not in self.getReservas():
                         print("Empréstimo negado do livro " + livro.getTitulo() + " para " + self.getNome() +": Mais reservas do que exemplares")
                         return False

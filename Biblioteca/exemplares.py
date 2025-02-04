@@ -9,7 +9,7 @@ class Exemplar:
         self.data_emprestimo = None
         self.data_devolucao = None
         self.user = None
-    
+
     def getID(self):
         return self.id
     
@@ -27,10 +27,11 @@ class Exemplar:
     def getEmprestado(self):
         return self.emprestado
 
-    def setEmprestado(self, data_emprestimo, user):
+    def setEmprestado(self, user):
         self.emprestado = True
-        self.data_emprestimo=data_emprestimo
+        self.data_emprestimo=datetime.now().strftime("%Y-%m-%d")
         self.user=user
+        
 
 
     def getData_Emprestimo(self):

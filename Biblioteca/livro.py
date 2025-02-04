@@ -1,4 +1,3 @@
-from exemplares import Exemplar
 
 class Livro:
     def __init__ (self, id, t, ed, au, edicao, ap):
@@ -26,6 +25,13 @@ class Livro:
             if i.getEmprestado() is False:
                 return i
         return None
+    
+    def getExemplaresDisponiveis(self):
+        disponiveis = []
+        for i in self.exemplares:
+            if i.getEmprestado() is False:
+                disponiveis.append(i)
+        return disponiveis
     
     def addReserva(self, user):
         self.usuarios_reservaram.append(user)

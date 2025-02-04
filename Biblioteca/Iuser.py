@@ -13,6 +13,10 @@ class User(ABC):
     @abstractmethod
     def getNome (self):
         pass
+    
+    @abstractmethod
+    def getEmprestimos_em_curso(self):
+        pass
 
     @abstractmethod
     def getTempo(self):

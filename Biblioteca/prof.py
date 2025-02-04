@@ -34,6 +34,13 @@ class Prof(User, Observador):
     def getLivros(self):
         return self.livros
     
+    def getEmprestimos_em_curso(self):
+        em_curso=[]
+        for i in self.livros:
+            if i.getEmprestado() is True:
+                em_curso.append(i)
+        return em_curso
+
     def addLivro(self, exemplar):
         self.livros.append(exemplar)
 
@@ -47,6 +54,7 @@ class Prof(User, Observador):
 
     def removeReserva(self, livro):
         self.reservas.remove(livro)
+
 
     def getTempo(self):
         return self.tempo

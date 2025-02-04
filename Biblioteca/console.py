@@ -1,4 +1,3 @@
-from singleton import getSistemaBiblioteca
 from comandos import *
 class Console:
     def __init__ (self, sistema):
@@ -15,6 +14,7 @@ class Console:
 
     def run (self): 
         while True:
+            print(" ")
             print("Digite um comando")
             x=input().split()
             if x[0] == "sai":
