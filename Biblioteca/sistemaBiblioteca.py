@@ -1,19 +1,9 @@
-from Iuser import User
 from comandos import * 
-from livro import Livro
 from datetime import datetime
 from reserva import Reserva
 
 class sistemaBiblioteca:
-    _instance = None
-
-    def __new__(cls, *args, **kwargs):
-        if not cls._instance:
-            cls._instance = super(sistemaBiblioteca, cls).__new__(cls)
-        return cls._instance
-
-    def __init__(self, lista_usuarios=None, lista_livros=None):
-        if not hasattr(self, 'usuarios'):
+    def __init__(self, lista_usuarios = None, lista_livros = None):
             self.usuarios = lista_usuarios if lista_usuarios else []
             self.livros = lista_livros if lista_livros else []
 
@@ -40,7 +30,7 @@ class sistemaBiblioteca:
             if u.empValido(l) is True:
                 exemplar = l.getExemplarDisponivel()
                 u.addLivro(exemplar)
-                exemplar.setEmprestado(datetime.now().strftime("%Y-%m-%d"))     
+                exemplar.setEmprestado(datetime.now().strftime("%Y-%m-%d"), u)     
         else:
             cmd = LivroIndisponivel (l, u)
             cmd.executar() 
@@ -48,14 +38,14 @@ class sistemaBiblioteca:
     def dev (self, IDuser, IDlivro):
         l=self.getLivrobyID(IDlivro)
         u=self.getUserbyID(IDuser)
-        emprestimos=u.getLivros()
         for i in l.getExemplares():
             if i in u.getLivros():
                 u.removeLivro(i)
                 cmd = LivroDevolvido(l, u)
                 return cmd.executar()
+        
         cmd = LivroNaoDevolvido(l, u)
-        cmd.executar()
+        return cmd.executar()
  
     def res (self, IDuser, IDlivro):
         l=self.getLivrobyID(IDlivro)
@@ -82,19 +72,14 @@ class sistemaBiblioteca:
     def liv(self, IDlivro):
         l = self.getLivrobyID(IDlivro)
         res=l.getReservas()
-        cmd = ConsultaLivro(l,res, self.usuarios)
+        cmd = ConsultaLivro(l,res)
+        cmd.executar()
 
     
     def usu(self, IDuser):
         u = self.getUserbyID(IDuser)
-        exemplares = u.getLivros()
-        livros = []
-        for i in self.livros:
-            for j in exemplares:
-                if i.id==j.id:
-                    livros.append(i)
         res = u.getReservas()
-        cmd = ConsultaUsuario(u, livros, res)
+        cmd = ConsultaUsuario(u, res)
         cmd.executar()
 
     def ntf (self, IDobs):

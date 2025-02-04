@@ -1,10 +1,10 @@
 from sistemaBiblioteca import sistemaBiblioteca
 
-class GetSistemaBiblioteca:
+class getSistemaBiblioteca:
     _instancia = None
 
-    @staticmethod 
-    def get_sistema():
-        if GetSistemaBiblioteca._instancia is None: 
-            GetSistemaBiblioteca._instancia = sistemaBiblioteca()
-        return GetSistemaBiblioteca._instancia
+    @staticmethod
+    def get_sistema(usuarios=None, livros=None):
+        if getSistemaBiblioteca._instancia is None:
+            getSistemaBiblioteca._instancia = sistemaBiblioteca(usuarios or [], livros or [])
+        return getSistemaBiblioteca._instancia

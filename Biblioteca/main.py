@@ -1,9 +1,11 @@
-from sistemaBiblioteca import sistemaBiblioteca
+
 from aGraduacao import alunoGrad
 from aPos import alunoPos
 from prof import Prof
 from livro import Livro
 from exemplares import Exemplar
+from singleton import getSistemaBiblioteca
+
 def main():
     u1 = alunoGrad('123', "Chico")
     u2 = alunoPos("456","Luis")
@@ -32,11 +34,8 @@ def main():
             if i.id == j.id:
                 i.exemplares.append(j)
     
-    fabrica = FabricaSistemaBiblioteca()
 
-    sema = fabrica.get_sistema()ist
-
-    s=sistemaBiblioteca([u1, u2, u3, u4, u5], [l1, l2, l3, l4, l5])
+    s=getSistemaBiblioteca.get_sistema([u1, u2, u3, u4, u5], [l1, l2, l3, l4, l5])
     
     while True:
         x=input().split()

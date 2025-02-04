@@ -1,4 +1,5 @@
-from datetime import datetime
+from datetime import datetime, timedelta
+from singleton import getSistemaBiblioteca
 
 class Exemplar:
     def __init__ (self, id, id_exemplar):
@@ -7,19 +8,29 @@ class Exemplar:
         self.emprestado = False
         self.data_emprestimo = None
         self.data_devolucao = None
-
+        self.user = None
+    
     def getID(self):
         return self.id
     
+    def getTitulo(self):
+        s=getSistemaBiblioteca.get_sistema()
+        livros = s.livros
+        for i in livros:
+            if i.id == self.id:
+                return i.getTitulo()
+
+
     def getIdEx (self):
         return self.id_exemplar
     
     def getEmprestado(self):
         return self.emprestado
 
-    def setEmprestado(self, data_emprestimo):
+    def setEmprestado(self, data_emprestimo, user):
         self.emprestado = True
         self.data_emprestimo=data_emprestimo
+        self.user=user
 
 
     def getData_Emprestimo(self):
@@ -31,7 +42,8 @@ class Exemplar:
     def Devolvido(self, data):
         self.data_devolucao = data
         self.emprestado = False
-
+        self.user = None
+    
     def getTempoEmprestado(self):
         if self.data_emprestimo is not None:
             data_emprestimo_dt = datetime.strptime(self.data_emprestimo, "%Y-%m-%d")
@@ -41,5 +53,15 @@ class Exemplar:
             return 0
     
 
-    def g
-    
+    def getUser(self):
+        return self.user
+
+    def getDataPrevista(self):
+        dataemp = self.getData_Emprestimo()
+        data_hoje = datetime.now()
+        tempo_usuario = self.user.getTempo()  # Inteiro representando dias
+        tempo_emprestado = self.getTempoEmprestado()  # Inteiro representando dias
+        diferenca_dias = tempo_usuario - tempo_emprestado
+        dataprev = data_hoje + timedelta(days=diferenca_dias)
+        
+        return dataprev.strftime("%Y-%m-%d")
